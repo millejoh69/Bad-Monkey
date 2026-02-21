@@ -1,27 +1,44 @@
 # Bad Monkey (Intro + Level 1)
 
-A compact browser game inspired by late-80s side-scrolling brawlers.
+A browser brawler inspired by late-80s side-scrollers.
 
 ## Story setup
 Mike (a shaved monkey) kidnaps President Ronnie's daughter. Johnny and Travis hit the streets to get her back.
 
-## Install and play (simple)
-No install is required.
+## New Mike voice branches
+- First Mike encounter triggers a dialogue inter-state.
+- Speak into the mic when prompted.
+- Your response is classified as:
+  - `aggressive` -> Mike becomes **Enraged** (bigger, red flash, stronger, throws knives).
+  - `determined` -> Mike becomes **Crafty** (more evasive and unpredictable).
+- At 25% Mike HP, a second voice inter-state triggers and changes his final-phase behavior.
 
-1. Open Finder.
-2. Go to `/Users/johnniemiller/Documents/Codex/arcade-rescue`.
-3. Double-click `index.html`.
-4. When the game loads, press any key once to enable audio in the browser.
-
-Optional (if you prefer terminal launch):
+## Run locally (with ChatGPT backend)
 
 1. Open Terminal.
 2. Run:
    ```bash
    cd /Users/johnniemiller/Documents/Codex/arcade-rescue
-   python3 -m http.server 8080
+   cp .env.example .env
    ```
-3. Open `http://localhost:8080` in your browser.
+3. Edit `.env` and set:
+   - `OPENAI_API_KEY=...`
+   - optional: `OPENAI_TTS_VOICE=onyx`
+   - optional: `OPENAI_TTS_MODEL=gpt-realtime-mini`
+   - optional: `OPENAI_REALTIME_MODEL=gpt-realtime-mini`
+4. Start server:
+   ```bash
+   npm start
+   ```
+5. Open:
+   - `http://localhost:8080`
+
+Notes:
+- If no API key is set, the game still works with local fallback classification/dialogue.
+- Mike voice uses OpenAI Realtime during Mike dialog scenes when available.
+- If Realtime setup fails, it falls back to `/api/tts`, then browser speech.
+- Browser mic permission is required for voice input.
+- Browser speech recognition support varies by browser.
 
 ## Controls
 - Move: Arrow keys or WASD
@@ -35,43 +52,12 @@ Optional (if you prefer terminal launch):
 - Restart game: `R`
 - Skip intro: `Enter`
 
-## What is included
-- Cinematic opening sequence
-- MP3 soundtrack switching by scene:
-  - Opening scene: `02. Fist of Fury (Main BGM 1).mp3`
-  - Gameplay: `05. Greased Lightning (Main BGM 2).mp3`
-  - Boss (Mike): `06. Dragon Ninja (Boss).mp3`
-  - Ending: `08. Ending (Japan Version).mp3`
-- One playable level with enemy waves
-- Two fixed enemy waves (4 enemies each), then Mike boss
-- Weapon pickups (knife and chain)
-- WAV sound effects:
-  - Punch: `punch.wav`
-  - Enemy death (with blink/fade): `enemy_die.wav`
-  - Knife throw: `knife_throw.wav`
-  - Chain use: `chain_use.wav`
-  - Jump: `jump.wav`
-- Ending scene with crying Mike image, jumping heroes, and rolling credits
+## GitHub Pages
+Static hosting works, but live ChatGPT branching and voice require backend endpoints (`/api/mike-dialogue`, `/api/realtime/session`, `/api/tts`).
+For full voice/AI behavior, run with `npm start` (or deploy the Node server).
 
-## Publish on GitHub Pages (exact steps)
-1. Create a new empty GitHub repo, for example `bad-monkey`.
-2. In Terminal, run:
-   ```bash
-   cd /Users/johnniemiller/Documents/Codex/arcade-rescue
-   git init
-   git add .
-   git commit -m "Bad Monkey v1"
-   git branch -M main
-   git remote add origin https://github.com/YOUR_USERNAME/bad-monkey.git
-   git push -u origin main
-   ```
-3. Open your repo on GitHub in browser.
-4. Go to `Settings` -> `Pages`.
-5. Under `Build and deployment`:
-   - `Source`: `Deploy from a branch`
-   - `Branch`: `main`
-   - `Folder`: `/ (root)`
-   - Click `Save`
-6. Wait about 1-2 minutes. Your game will be live at:
-   - `https://YOUR_USERNAME.github.io/bad-monkey/`
-7. Share that URL.
+## Quick Mac launcher
+- Double-click `/Users/johnniemiller/Documents/Codex/arcade-rescue/Start Bad Monkey.command` in Finder to start local server + open the game URL.
+
+## Quick Mac launcher
+- Double-click  in Finder to start local server + open the game URL.
